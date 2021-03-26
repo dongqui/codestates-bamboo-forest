@@ -1,0 +1,16 @@
+.main-container {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 90vh;
+  overflow-y: auto;
+  background-color: blue;
+}
+.header-container {
+  height: 10vh;
+  background-color: red;
+}
+.app {
+  width: 90%;
+  height: 100vh;
+  margin: 0 auto;
+}
