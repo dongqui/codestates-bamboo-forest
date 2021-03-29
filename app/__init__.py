@@ -23,7 +23,9 @@ class Post(db.Model, SerializerMixin):
 
 @app.before_request
 def hook():
-    if request.endpoint != 'password' and request.cookies.get('password') != PASSWORD:
+    if request.endpoint != 'password' and \
+            request.cookies.get('password') != PASSWORD and \
+            request.endpoint != 'static':
         return redirect(url_for('password'))
 
 
@@ -65,5 +67,6 @@ def password():
 
 
 if __name__ == "__main__":
+    db.drop_all()
     db.create_all()
     app.run()
