@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/static/styles/index.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body>
+  <header class="header-container">
+    <a href="/">
+      <h1>Codestates 대나무 숲</h1>
+    </a>
+    <div class="question-wrapper">
+      <a href="/help">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/600px-Icon-round-Question_mark.svg.png">
+      </a>
+    </div>
+  </header>
+  <main class="main-container">
+    <ul>
+      <li>
+        <div id="first-card" class="card">
+          <div id="img-container">
+            <img src="https://static.thenounproject.com/png/21602-200.png">
+          </div>
+          <div class="form-container">
+            <textarea autofocus></textarea>
+            <div class="form-foot">
+              <button id="send" class="form-btn">소리치기</button>
+              <button id="cancel" class="form-btn">참기</button>
+            </div>
+          </div>
+        </div>
+      </li>
+    {% for post in posts %}
+      <li>
+        <div class="card content">
+          {{ post.content }}
+        </div>
+      </li>
+    {% endfor %}
+    </ul>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const sendButton = document.getElementById('send');
+    const cancelButton = document.getElementById('cancel');
+    const textareaEl = document.getElementsByTagName('textarea')[0];
+    const imgContainer = document.getElementById('img-container');
+    const firstCard = document.getElementById('first-card');
+
+    sendButton.addEventListener('click', async function(e) {
+      const newPost = (await axios.post('/post', { content: textareaEl.value })).data;
+      const newNode = document.createElement('li');
+      newNode.innerHTML = `
+        <div class="card content slide-in">
+          ${newPost.content.replaceAll('\n', '<br>')}
+        </div>
+      `
+      textareaEl.value = '';
+      imgContainer.style.display = 'flex';
+      firstCard.parentNode.after(newNode);
+    });
+    cancelButton.addEventListener('click', function(e) {
+      textareaEl.value = '';
+      imgContainer.style.display = 'flex';
+    });
+    imgContainer.addEventListener('click', function (e) {
+      textareaEl.focus();
+      imgContainer.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
