@@ -31,7 +31,7 @@ def hook():
 
 @app.route('/', methods=['GET'])
 def index():
-    posts = Post.query.all()
+    posts = Post.query.order_by(Post.id.desc()).all()
     return render_template('index.html', posts=posts)
 
 
@@ -67,6 +67,5 @@ def password():
 
 
 if __name__ == "__main__":
-    db.drop_all()
     db.create_all()
     app.run()
